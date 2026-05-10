@@ -25,6 +25,10 @@ Backend API untuk platform penyewaan alat elektronik bekas berbasis NodeJS, Expr
 
 ---
 
+## Testing
+
+Project tested using Postman API.
+
 ## Installation
 
 ```bash
