@@ -10,7 +10,7 @@ router.post(
   '/',
   authMiddleware,
   ownerOnly ('owner'),
-  ItemController.create
+  ItemController.createItem
 )
 
 router.get(

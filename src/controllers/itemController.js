@@ -1,64 +1,43 @@
 const { Item } = require('../../models')
 
-class ItemController {
+exports.createItem = async (req, res, next) => {
 
-  static async create(req, res) {
+  try {
 
-    try {
+    const item = await Item.create({
+      ...req.body,
+      owner_id: req.user.id
+    })
 
-      const {
-        name,
-        description,
-        stock,
-        price_per_day
-      } = req.body
+    res.status(201).json({
+      success: true,
+      message: 'Item created successfully',
+      data: item
+    })
 
-      const item = await Item.create({
-        name,
-        description,
-        stock,
-        price_per_day,
-        owner_id: req.user.id,
-        status: 'available'
-      })
+  } catch (error) {
 
-      res.status(201).json({
-        success: true,
-        message: 'Item created successfully',
-        data: result
-      })
-
-    } catch (error) {
-
-      res.status(500).json({
-        message: error.message
-      })
-
-    }
+    next(error)
 
   }
+  
+}
 
-  static async getAll(req, res) {
+exports.getAll = async (req, res, next) => {
 
-    try {
+  try {
 
-      const items = await Item.findAll()
+    const items = await Item.findAll()
 
-      res.json({
-        success: true,
-        data: items
-      })
+    res.json({
+      success: true,
+      data: items
+    })
 
-    } catch (error) {
+  } catch (error) {
 
-      res.status(500).json({
-        message: error.message
-      })
-
-    }
+    next(error)
 
   }
 
 }
-
-module.exports = ItemController
