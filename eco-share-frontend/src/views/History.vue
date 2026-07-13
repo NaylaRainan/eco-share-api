@@ -1,80 +1,234 @@
 <template>
-  <div>
 
-    <div class="mb-4">
-      <h2 class="fw-bold">Riwayat Rental</h2>
-      <small class="text-muted">
-        Riwayat transaksi EcoShare
-      </small>
-    </div>
+<div>
 
-    <div class="card-custom p-4">
 
-      <table class="table table-hover align-middle">
+<h2 class="fw-bold mb-4">
+History Rental
+</h2>
 
-        <thead>
-          <tr>
-            <th>No</th>
-            <th>Rental ID</th>
-            <th>Catatan</th>
-          </tr>
-        </thead>
 
-        <tbody>
 
-          <tr
-            v-for="(history,index) in histories"
-            :key="history.id"
-          >
+<div class="card-custom p-4">
 
-            <td>{{ index+1 }}</td>
 
-            <td>{{ history.rental_id }}</td>
+<table class="table align-middle">
 
-            <td>{{ history.note }}</td>
 
-          </tr>
+<thead>
 
-          <tr v-if="histories.length===0">
+<tr>
 
-            <td colspan="3" class="text-center">
+<th>No</th>
 
-              Belum ada riwayat.
+<th>Barang</th>
 
-            </td>
+<th>Qty</th>
 
-          </tr>
+<th>Total</th>
 
-        </tbody>
+<th>Status</th>
 
-      </table>
+<th>Tanggal</th>
 
-    </div>
+<th>Aksi</th>
 
-  </div>
+</tr>
+
+</thead>
+
+
+
+<tbody>
+
+
+<tr
+v-for="(rental,index) in rentals"
+:key="rental.id"
+>
+
+
+<td>
+{{ index+1 }}
+</td>
+
+
+
+<td>
+{{ rental.Item?.name }}
+</td>
+
+
+
+<td>
+{{ rental.qty }}
+</td>
+
+
+
+<td>
+
+Rp {{ Number(rental.total_price)
+.toLocaleString('id-ID') }}
+
+</td>
+
+
+
+<td>
+
+
+<span
+class="badge"
+:class="statusClass(rental.status)"
+>
+
+{{ rental.status }}
+
+</span>
+
+
+</td>
+
+
+
+<td>
+
+{{ rental.start_date }}
+
+</td>
+
+<td>
+
+<RouterLink
+class="btn btn-sm btn-purple"
+:to="`/invoice/${rental.id}`"
+>
+
+<i class="bi bi-receipt"></i>
+
+Invoice
+
+</RouterLink>
+
+</td>
+
+</tr>
+
+
+
+<tr v-if="rentals.length===0">
+
+<td
+colspan="7"
+class="text-center"
+>
+
+Belum ada riwayat rental.
+
+</td>
+
+</tr>
+
+
+</tbody>
+
+
+</table>
+
+
+</div>
+
+
+</div>
+
 </template>
 
+
+
+
+
 <script setup>
-import { ref, onMounted } from "vue";
-import historyService from "../services/historyService";
 
-const histories = ref([]);
 
-const loadHistory = async () => {
+import {
+ref,
+onMounted
+} from "vue"
 
-    try{
 
-        const res = await historyService.getAll();
 
-        histories.value = res.data.data;
+import rentalService from "../services/rentalService"
 
-    }catch(err){
 
-        console.log(err);
 
-    }
+
+const rentals = ref([])
+
+
+
+
+
+const loadHistory = async()=>{
+
+
+try{
+
+
+const res =
+await rentalService.getAll()
+
+
+rentals.value =
+res.data.data
+
+
+
+}catch(err){
+
+console.log(err)
 
 }
 
-onMounted(loadHistory);
+
+}
+
+
+
+
+
+
+
+const statusClass=(status)=>{
+
+
+if(status==="approved"){
+
+return "bg-success"
+
+}
+
+
+if(status==="finished"){
+
+return "bg-primary"
+
+}
+
+
+return "bg-warning"
+
+
+}
+
+
+
+
+
+
+
+onMounted(loadHistory)
+
+
+
 </script>
