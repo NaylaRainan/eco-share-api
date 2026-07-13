@@ -9,6 +9,9 @@ require('./routes/authRoutes')
 const authMiddleware =
 require('./middlewares/authMiddleware')
 
+const dashboardRoutes =
+require("./routes/dashboardRoutes");
+
 const ownerOnly =
 require('./middlewares/roleMiddleware')
 
