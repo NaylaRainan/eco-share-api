@@ -1,21 +1,41 @@
-const router = require('express').Router()
+const router = require("express").Router();
 
 const RentalController =
-require('../controllers/rentalController')
+require("../controllers/rentalController");
 
 const authMiddleware =
-require('../middlewares/authMiddleware')
+require("../middlewares/authMiddleware");
 
-router.get(
-    '/',
-    authMiddleware,
-    RentalController.getAll
-)
+const ownerOnly =
+require("../middlewares/roleMiddleware");
 
+// renter membuat rental
 router.post(
-    '/',
+    "/",
     authMiddleware,
     RentalController.create
-)
+);
 
-module.exports = router
+// semua rental
+router.get(
+    "/",
+    authMiddleware,
+    RentalController.getAll
+);
+
+// detail rental
+router.get(
+    "/:id",
+    authMiddleware,
+    RentalController.getById
+);
+
+// owner update status
+router.put(
+  "/:id/status",
+  authMiddleware,
+  ownerOnly("owner"),
+  RentalController.updateStatus
+);
+
+module.exports = router;

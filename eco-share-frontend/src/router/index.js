@@ -6,6 +6,7 @@ import Items from "../views/Items.vue";
 import Rentals from "../views/Rentals.vue";
 import History from "../views/History.vue";
 import Profile from "../views/Profile.vue";
+import Invoice from "../views/Invoice.vue"
 
 import MainLayout from "../layouts/MainLayout.vue";
 
@@ -41,6 +42,10 @@ const routes = [
       {
         path: "profile",
         component: Profile,
+      },
+      {
+        path:"/invoice/:id",
+        component:Invoice
       },
     ],
   },

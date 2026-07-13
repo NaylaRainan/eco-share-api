@@ -74,6 +74,75 @@ class RentalService {
 
   }
 
+  static async getAllRentals(user) {
+
+    if (user.role === "owner") {
+
+      return await Rental.findAll({
+        include: [
+          {
+            model: Item
+          }
+        ],
+        order: [["id", "DESC"]]
+      });
+
+    }
+
+    return await Rental.findAll({
+
+      where: {
+        renter_id: user.id
+      },
+
+      include: [
+        {
+          model: Item
+        }
+      ],
+
+      order: [["id", "DESC"]]
+
+    });
+
+  }
+
+  static async getRentalDetail(id) {
+
+    const rental = await Rental.findByPk(id, {
+
+      include: [
+        {
+          model: Item
+        }
+      ]
+
+    });
+
+    if (!rental) {
+      throw new Error("Rental not found");
+    }
+
+    return rental;
+
+  }
+
+  static async updateStatus(id, status) {
+
+    const rental = await Rental.findByPk(id);
+
+    if (!rental) {
+      throw new Error("Rental not found");
+    }
+
+    rental.status = status;
+
+    await rental.save();
+
+    return rental;
+
+  }
+
 }
 
 module.exports = RentalService

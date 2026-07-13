@@ -18,4 +18,24 @@ router.get(
   ItemController.getAll
 )
 
+router.get(
+    "/:id",
+    ItemController.getById
+);
+
+router.put(
+  '/:id',
+  authMiddleware,
+  ownerOnly('owner'),
+  ItemController.updateItem
+)
+
+
+router.delete(
+  '/:id',
+  authMiddleware,
+  ownerOnly('owner'),
+  ItemController.deleteItem
+)
+
 module.exports = router

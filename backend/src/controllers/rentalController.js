@@ -1,77 +1,104 @@
-const RentalService = require('../services/rentalService')
-const { Rental, Item, User } = require('../../models')
+const RentalService = require("../services/rentalService");
 
 class RentalController {
 
   static async create(req, res) {
-
     try {
 
-      const rental =
-        await RentalService.createRental(
-          req.body,
-          req.user.id
-        )
+      const rental = await RentalService.createRental(
+        req.body,
+        req.user.id
+      );
 
       res.status(201).json({
         success: true,
-        message: 'Rental created successfully',
+        message: "Rental created successfully",
         data: rental
-      })
+      });
 
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        })
-    }
 
+      res.status(500).json({
+        success: false,
+        message: error.message
+      });
+
+    }
   }
 
   static async getAll(req, res) {
 
-      try {
+    try {
 
-          const rentals = await Rental.findAll({
+      const rentals = await RentalService.getAllRentals(req.user);
 
-              include: [
+      res.json({
+        success: true,
+        data: rentals
+      });
 
-                  {
-                      model: Item,
-                      attributes: ['name']
-                  },
+    } catch (error) {
 
-                  {
-                      model: User,
-                      attributes: ['name']
-                  }
+      res.status(500).json({
+        success: false,
+        message: error.message
+      });
 
-              ]
+    }
 
-          })
+  }
 
-          res.json({
+  static async getById(req, res) {
 
-              success: true,
+    try {
 
-              data: rentals
+      const rental = await RentalService.getRentalDetail(
+        req.params.id
+      );
 
-          })
+      res.json({
+        success: true,
+        data: rental
+      });
 
-      } catch (error) {
+    } catch (error) {
 
-          res.status(500).json({
+      res.status(500).json({
+        success: false,
+        message: error.message
+      });
 
-              success: false,
+    }
 
-              message: error.message
+  }
 
-          })
+  static async updateStatus(req, res) {
 
-      }
+    try {
+
+      const rental =
+        await RentalService.updateStatus(
+          req.params.id,
+          req.body.status
+        );
+
+      res.json({
+        success: true,
+        message: "Status updated",
+        data: rental
+      });
+
+    } catch (error) {
+
+      res.status(500).json({
+        success: false,
+        message: error.message
+      });
+
+    }
 
   }
 
 }
 
-module.exports = RentalController
+module.exports = RentalController;
