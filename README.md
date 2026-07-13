@@ -257,4 +257,4 @@ Setelah login berhasil, server akan mengembalikan token yang digunakan untuk men
 **Nayla Raina Nazhirah**  
 NIM: **411231018**
 
-Project UAS — **Fullstack Web Development**
+UAS — **Pemprograman Fullstack**
