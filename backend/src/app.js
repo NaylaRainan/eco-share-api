@@ -1,4 +1,5 @@
 const express = require('express')
+const cors = require('cors')
 
 const app = express()
 
@@ -20,13 +21,30 @@ require('./routes/rentalRoutes')
 const errorHandler =
 require('./middlewares/errorHandler')
 
+const historyRoutes =
+require('./routes/historyRoutes')
+
+const profileRoutes =
+require('./routes/profileRoutes')
+
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true
+}))
+
+app.use(express.json())
+
 app.use(express.json())
 
 app.use('/api/auth', authRoutes)
 
-app.use('/items', itemRoutes)
+app.use('/api/items', itemRoutes)
 
-app.use('/rentals', rentalRoutes)
+app.use('/api/rentals', rentalRoutes)
+
+app.use('/api/history', historyRoutes)
+
+app.use('/api/profile', profileRoutes)
 
 app.use(errorHandler)
 

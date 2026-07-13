@@ -6,10 +6,16 @@ require('../controllers/rentalController')
 const authMiddleware =
 require('../middlewares/authMiddleware')
 
+router.get(
+    '/',
+    authMiddleware,
+    RentalController.getAll
+)
+
 router.post(
-  '/',
-  authMiddleware,
-  RentalController.create
+    '/',
+    authMiddleware,
+    RentalController.create
 )
 
 module.exports = router

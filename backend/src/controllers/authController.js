@@ -92,14 +92,31 @@ class AuthController {
 
       const token = generateToken(user)
 
-      res.status(200).json({
-        success: true,
-        message: 'Login successful',
-        token
+      res.json({
+
+          success:true,
+
+          message:"Login successful",
+
+          token,
+
+          user:{
+
+              id:user.id,
+
+              name:user.name,
+
+              email:user.email,
+
+              role:user.role
+
+          }
+
       })
 
     } catch (error) {
       res.status(500).json({
+        success: false,
         message: error.message
       })
     }
